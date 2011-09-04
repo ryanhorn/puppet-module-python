@@ -27,7 +27,7 @@ define python::venv::isolate($ensure=present,
     # Does not successfully run as www-data on Debian:
     exec { "python::venv $root":
       command => "virtualenv -p `which ${python}` ${root}",
-      creates => $root,
+      creates => "$root/bin/pip",
       notify => Exec["update distribute and pip in $root"],
       require => [File[$root_parent],
                   Package["python-virtualenv"]],
