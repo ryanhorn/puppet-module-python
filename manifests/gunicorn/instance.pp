@@ -4,6 +4,7 @@ define python::gunicorn::instance($venv,
                                   $wsgi_module="",
                                   $django=false,
                                   $django_settings="",
+                                  $paster_config='',
                                   $version=undef,
                                   $workers=1) {
   $is_present = $ensure == "present"
@@ -18,8 +19,8 @@ define python::gunicorn::instance($venv,
   $socket = "unix:$rundir/$name.sock"
   $logfile = "$logdir/$name.log"
 
-  if $wsgi_module == "" and !$django {
-    fail("If you're not using Django you have to define a WSGI module.")
+  if $wsgi_module == "" and !$django and $paster_config == '' {
+    fail('You must either specify wdgi_module, django or paster_config')
   }
 
   if $django_settings != "" and !$django {
